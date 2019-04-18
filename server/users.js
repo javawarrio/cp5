@@ -9,6 +9,8 @@ const SALT_WORK_FACTOR = 10;
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
+  address: String,
+  phone: String,
   name: String,
   tokens: [],
 });
@@ -102,7 +104,9 @@ router.post('/', async (req, res) => {
     const user = new User({
       username: req.body.username,
       password: req.body.password,
-      name: req.body.name
+      address: req.body.address,
+      phone: req.body.phone,
+      name: req.body.name,
     });
     await user.save();
     login(user, res);
@@ -167,10 +171,23 @@ router.delete("/", auth.verifyToken, User.verify, async (req, res) => {
   res.sendStatus(200);
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    let users = await User.findOne({
+      _id: req.params.id,
+    })
+    return res.send(users);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
 // Get current user if logged in.
 router.get('/', auth.verifyToken, User.verify, async (req, res) => {
+  console.log("yo");
   return res.send(req.user);
 });
+
 
 module.exports = {
   model: User,

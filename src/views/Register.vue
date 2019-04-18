@@ -16,6 +16,16 @@
       </div>
 
       <div class="pure-control-group">
+        <label for="address">Your Address</label>
+        <input v-model="address" type="text" placeholder="Your Address">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="phone">Your Phone Number</label>
+        <input v-model="phone" type="text" placeholder="Your Phone Number">
+      </div>
+
+      <div class="pure-control-group">
         <label for="password">Password</label>
         <input v-model="password" type="password" placeholder="Password">
       </div>
@@ -36,6 +46,8 @@ export default {
     return {
       name: '',
       username: '',
+      address: '',
+      phone: '',
       password: '',
       error: '',
     }
@@ -46,7 +58,10 @@ export default {
         this.error = await this.$store.dispatch("register", {
           name: this.name,
           username: this.username,
-          password: this.password
+            address: this.address,
+            phone: this.phone,
+          password: this.password,
+
         });
         if (this.error === "")
           this.$router.push('mypage');

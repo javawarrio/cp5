@@ -10,6 +10,7 @@ export default new Vuex.Store({
     photos: [],
     photo1: String,
     comments: [],
+    userId: String,
   },
   mutations: {
     setUser(state, user) {
@@ -25,8 +26,7 @@ export default new Vuex.Store({
   setComment(state, comments)
   {
   state.comments = comments;
-  console.log(state.comments);
-},
+  },
   },
   actions: {
     async register(context, data) {
@@ -65,6 +65,15 @@ export default new Vuex.Store({
         return "";
       }
     },
+    async getOneUser(context, id) {
+      try {
+        let response = await axios.get("/api/users/" + id);
+      context.commit('setUser', response.data);
+        return "";
+      } catch (error) {
+        return "";
+      }
+    },
     async getTime(context) {
       try {
         let response = await axios.get("/api/users");
@@ -82,7 +91,17 @@ export default new Vuex.Store({
         return error.response.data.message;
       }
     },
+
     async getMyPhotos(context) {
+      try {
+        let response = await axios.get("/api/photos");
+        context.commit('setPhotos', response.data);
+        return "";
+      } catch (error) {
+        return "";
+      }
+    },
+    async getSellerPhotos(context, id) {
       try {
         let response = await axios.get("/api/photos");
         context.commit('setPhotos', response.data);
@@ -110,7 +129,6 @@ export default new Vuex.Store({
       }
     },
     async getComments(context) {
-      console.log("hello");
       try {
         let response = await axios.get("/api/comments/all");
         context.commit('setComment', response.data);
@@ -120,7 +138,6 @@ export default new Vuex.Store({
       }
     },
     async addComment(context, data) {
-      console.log(data);
       try {
         let response = await axios.post("/api/comments/", data);
         return "";

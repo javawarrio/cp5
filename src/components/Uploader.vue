@@ -9,8 +9,9 @@
         <div class="modal-body">
           <p v-if="error" class="error">{{error}}</p>
           <form @submit.prevent="upload">
-            <input v-model="title" placeholder="Title">
-            <p></p>
+            <input v-model="title" placeholder="Animal Name">
+            <input v-model="price" placeholder="Animal Price">
+            <input v-model="type" placeholder="Animal Type">
             <textarea v-model="description" placeholder="Description"></textarea>
             <p></p>
             <input type="file" name="photo" @change="fileChanged">
@@ -35,6 +36,10 @@ export default {
     return {
       title: '',
       description: '',
+      price: '',
+      type: '',
+      address: '',
+      phone: '',
       file: null,
       error: '',
     }
@@ -52,9 +57,17 @@ export default {
         formData.append('photo', this.file, this.file.name);
         formData.append('title', this.title);
         formData.append('description', this.description);
+        formData.append('price', this.price);
+        formData.append('type', this.type);
+        formData.append('address', this.address);
+        formData.append('phone', this.phone);
         this.error = await this.$store.dispatch("upload", formData);
         if (!this.error) {
           this.title = '';
+          this.price = '';
+          this.type = '';
+          this.address = '';
+          this.phone = '';
           this.description = '';
           this.file = null;
           this.$emit('uploadFinished');
@@ -65,19 +78,16 @@ export default {
       }
       }
       }
-
 </script>
 
 <style scoped>
 input {
   width: 100%;
 }
-
 textarea {
   width: 100%;
   height: 100px
 }
-
 .pure-button-secondary {
   float: right;
 }

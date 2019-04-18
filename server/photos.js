@@ -21,6 +21,8 @@ const photoSchema = new mongoose.Schema({
   },
   path: String,
   title: String,
+  price: String,
+  type: String,
   description: String,
   created: {
     type: Date,
@@ -41,6 +43,8 @@ router.post("/", auth.verifyToken, User.verify, upload.single('photo'), async (r
     user: req.user,
     path: "/images/" + req.file.filename,
     title: req.body.title,
+    price: req.body.price,
+    type: req.body.type,
     description: req.body.description,
   });
   try {
@@ -56,6 +60,7 @@ router.post("/", auth.verifyToken, User.verify, upload.single('photo'), async (r
 
 router.get("/", auth.verifyToken, User.verify, async (req, res) => {
   // return photos
+  console.log("!!");
   try {
     let photos = await Photo.find({
       user: req.user
